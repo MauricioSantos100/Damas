@@ -1,11 +1,12 @@
 tabuleiro = {}
+
 function criaTabuleiro()
-    for i = 1, 8, 1 do
-        tabuleiro[i] = {}
-        for j = 1, 8, 1 do
-            tabuleiro[i][j] = ' '
-        end
+  for i = 1, 8, 1 do
+    tabuleiro[i] = {}
+    for j = 1, 8, 1 do
+      tabuleiro[i][j] = ' '
     end
+  end
 end
 
 function posicionaPecas()
@@ -51,7 +52,14 @@ function mostraTabuleiro()
   end
 end
 
---vejo se a casa digitada contem uma peca branca
+function movimentaPecaDama(linha, coluna, linhaL, colunaL)
+  tabuleiro[linhaL][colunaL] = tabuleiro[linha][coluna]
+  tabuleiro[linha][coluna] = ' '
+  if(linhaL == 1 or linhaL == 8) then
+    transformaEmDama(linhaL, colunaL)
+  end
+end
+
 function verPecaB(linha, coluna)
   if(tabuleiro[linha][coluna] == jogador1.peca or tabuleiro[linha][coluna] == jogador1.dama) then
     return true
@@ -59,7 +67,6 @@ function verPecaB(linha, coluna)
   return false
 end
 
---vejo se a casa digitada contem uma peca preta
 function verPecaP(linha, coluna)
   if(tabuleiro[linha][coluna] == jogador2.peca or tabuleiro[linha][coluna] == jogador2.dama) then
     return true
@@ -67,7 +74,20 @@ function verPecaP(linha, coluna)
   return false
 end
 
---vejo se a casa para onde vai ser movida esta Fazia
+function verDama(linha, coluna)
+  if(tabuleiro[linha][coluna] == 'DB' or tabuleiro[linha][coluna] == 'DP') then
+    return true
+  end
+  return false
+end
+
+function verificaLinhaColuna(linha, coluna)
+  if((linha >= 1 and linha <= 8) and (coluna >= 1 and coluna <= 8)) then
+    return true
+  end
+  return false
+end
+
 function verificaVazio(linhaL, colunaL)
   if(tabuleiro[linhaL][colunaL] == ' ') then
     return true
@@ -75,34 +95,31 @@ function verificaVazio(linhaL, colunaL)
   return false
 end
 
---faz a mudanca no tabuleiro apois uma dama andar
-function PecasDamas(linha, coluna, linhaL, colunaL)
-  tabuleiro[linhaL][colunaL] = tabuleiro[linha][coluna]
-  tabuleiro[linha][coluna] = ' '
-  transformaEmDama(linhaL, colunaL)
-end
-
---vejo se o local para onde vai ser movida é Valida/Possivel
 function validaPosicao(linha, coluna, linhaL, colunaL)
-  if((tabuleiro[linha][coluna] == 'B') and (linha - 1 == linhaL and coluna + 1 == colunaL) or (linha - 1 == linhaL and coluna - 1 == colunaL)) then
-      PecasDamas(linha, coluna, linhaL, colunaL)
-    return true
-  elseif((tabuleiro[linha][coluna] == 'P') and (linha + 1 == linhaL and coluna - 1 == colunaL) or (linha + 1 == linhaL and coluna + 1 == colunaL)) then
-    PecasDamas(linha, coluna, linhaL, colunaL)
-    return true
+  if(tabuleiro[linha][coluna] == 'B') then
+    if(linha - 1 == linhaL) then
+      if(coluna + 1 == colunaL or coluna - 1 == colunaL) then
+        return true
+      end
+    end
+  elseif(tabuleiro[linha][coluna] == 'P') then
+    if(linha + 1 == linhaL) then
+      if(coluna + 1 == colunaL or coluna - 1 == colunaL) then
+        return true
+      end
+    end
   end
   return false
 end
 
---faz a verificacao para movimentar a dama
 function validaposicaoDama(linha, coluna, linhaL, colunaL)
-  if(linha > linhaL) then
-    distancia = linha - linhaL
-  elseif(linha < linhaL) then
-    distancia = linhaL - linha
-  end
+  if(verDama(linha, coluna)) then
+    if(linha > linhaL) then
+      distancia = linha - linhaL
+    else
+      distancia = linhaL - linha
+    end
 
-  if(tabuleiro[linha][coluna] == 'DB' or tabuleiro[linha][coluna] == 'DP') then
     if(linhaL < linha  and  colunaL < coluna) then
       for i = 1, distancia, 1 do
         if(tabuleiro[linha - i][coluna - i] ~= ' ') then
@@ -155,43 +172,45 @@ function validaposicaoDama(linha, coluna, linhaL, colunaL)
   return false
 end
 
---faz a mudanca no tabuleiro apois uma peca ser capturada
 function trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
+  subtraiPeca(linhaN,colunaN)
   tabuleiro[linhaL][colunaL] = tabuleiro[linha][coluna]
   tabuleiro[linhaN][colunaN] = ' '
   tabuleiro[linha][coluna] = ' '
   transformaEmDama(linhaL, colunaL)
 end
 
---valida a posicao atual da peca e a posicao da peca inimiga
 function verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN)
-  if (tabuleiro[linha][coluna] == 'B' and tabuleiro[linhaN][colunaN] == 'P' or tabuleiro[linha][coluna] == 'P' and tabuleiro[linhaN][colunaN] == 'B') then
-    subtraiPeca(linhaN,colunaN)
-    trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
-    return true
-  elseif(tabuleiro[linha][coluna] == 'B' and tabuleiro[linhaN][colunaN] == 'DP' or tabuleiro[linha][coluna] == 'P' and tabuleiro[linhaN][colunaN] == 'DB') then
-    subtraiPeca(linhaN,colunaN)
-    trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
-    return true
-  elseif(tabuleiro[linha][coluna] == 'DB' and tabuleiro[linhaN][colunaN] == 'P' or tabuleiro[linha][coluna] == 'DP' and tabuleiro[linhaN][colunaN] == 'B') then
-    subtraiPeca(linhaN,colunaN)
-    trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
-    return true
-  elseif(tabuleiro[linha][coluna] == 'DB' and tabuleiro[linhaN][colunaN] == 'DP' or tabuleiro[linha][coluna] == 'DP' and tabuleiro[linhaN][colunaN] == 'DB') then
-    subtraiPeca(linhaN,colunaN)
-    trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
-    return true
+  if(tabuleiro[linha][coluna] == 'B') then
+    if(tabuleiro[linhaN][colunaN] == 'P' or tabuleiro[linhaN][colunaN] == 'DP') then
+      trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
+      return true
+    end
+  elseif(tabuleiro[linha][coluna] == 'P') then
+    if(tabuleiro[linhaN][colunaN] == 'B' or tabuleiro[linhaN][colunaN] == 'DB') then
+      trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
+      return true
+    end
+  elseif(tabuleiro[linha][coluna] == 'DB') then
+    if(tabuleiro[linhaN][colunaN] == 'P' or tabuleiro[linhaN][colunaN] == 'DP') then
+      trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
+      return true
+    end
+  elseif(tabuleiro[linha][coluna] == 'DP') then
+    if(tabuleiro[linhaN][colunaN] == 'B' or tabuleiro[linhaN][colunaN] == 'DB') then
+      trocaPecas(linha, coluna, linhaL, colunaL, linhaN, colunaN)
+      return true
+    end
   end
   return false
 end
 
---vejo se é possivel comer uma peca
 function capturaPeca(linha, coluna, linhaL, colunaL)
-  if(verificaVazio(linhaL, colunaL) == true) then
+  if(verificaVazio(linhaL, colunaL)) then
     if(linhaL < linha  and  colunaL < coluna) then
       linhaN = linhaL + 1
       colunaN = colunaL + 1
-      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN) == true) then
+      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN)) then
         return true
       end
     end
@@ -199,7 +218,7 @@ function capturaPeca(linha, coluna, linhaL, colunaL)
     if(linhaL < linha and colunaL > coluna) then
       linhaN = linhaL + 1
       colunaN = colunaL - 1
-      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN) == true) then
+      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN)) then
         return true
       end
     end
@@ -207,7 +226,7 @@ function capturaPeca(linha, coluna, linhaL, colunaL)
     if(linhaL > linha and colunaL < coluna) then
       linhaN = linhaL - 1
       colunaN = colunaL + 1
-      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN) == true) then
+      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN)) then
         return true
       end
     end
@@ -215,7 +234,7 @@ function capturaPeca(linha, coluna, linhaL, colunaL)
     if(linhaL > linha and colunaL > coluna) then
       linhaN = linhaL - 1
       colunaN = colunaL - 1
-      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN) == true) then
+      if(verificaNovaLinha(linha, coluna, linhaL, colunaL, linhaN, colunaN)) then
         return true
       end
     end
@@ -223,34 +242,74 @@ function capturaPeca(linha, coluna, linhaL, colunaL)
   return false
 end
 
---verifica se tem uma peca inimiga proxima
 function verificaArea(linhaL, colunaL)
   posicao1 = tabuleiro[linhaL - 1][colunaL - 1]
-  posicao2 = tabuleiro[linhaL - 1][colunaL + 1]
-  posicao3 = tabuleiro[linhaL + 1][colunaL - 1]
+  posicao2 = tabuleiro[linhaL + 1][colunaL - 1]
+  posicao3 = tabuleiro[linhaL - 1][colunaL + 1]
   posicao4 = tabuleiro[linhaL + 1][colunaL + 1]
 
-  if(posicao1 ~= tabuleiro[linhaL][colunaL] and posicao1 ~= ' ') then
-    return true
-  elseif(posicao2 ~= tabuleiro[linhaL][colunaL] and posicao1 ~= ' ') then
-    return true
-  elseif(posicao3 ~= tabuleiro[linhaL][colunaL] and posicao1 ~= ' ') then
-    return true
-  elseif(posicao4 ~= tabuleiro[linhaL][colunaL] and posicao1 ~= ' ') then
-    return true
+  if(tabuleiro[linhaL][colunaL] == 'B' or tabuleiro[linhaL][colunaL] == 'DB') then
+    if(posicao1 == 'P' or posicao1 == 'DP') then
+      if(verificaVazio(linhaL - 2, colunaL - 2)) then
+        return true
+      end
+    end
+    if(posicao2 == 'P' or posicao1 == 'DP') then
+      if(verificaVazio(linhaL + 2, colunaL - 2)) then
+        return true
+      end
+    end
+    if(posicao3 == 'P' or posicao1 == 'DP') then
+      if(verificaVazio(linhaL - 2, colunaL + 2)) then
+        return true
+      end
+    end
+    if(posicao4 == 'P' or posicao1 == 'DP') then
+      if(verificaVazio(linhaL + 2, colunaL + 2)) then
+        return true
+      end
+    end
+  elseif(tabuleiro[linhaL][colunaL] == 'P' or tabuleiro[linhaL][colunaL] == 'DP') then
+    if(posicao1 == 'B' or posicao1 == 'DB') then
+      if(verificaVazio(linhaL - 2, colunaL - 2)) then
+        return true
+      end
+    end
+    if(posicao2 == 'B' or posicao1 == 'DB') then
+      if(verificaVazio(linhaL + 2, colunaL - 2)) then
+        return true
+      end
+    end
+    if(posicao3 == 'B' or posicao1 == 'DB') then
+      if(verificaVazio(linhaL - 2, colunaL + 2)) then
+        return true
+      end
+    end
+    if(posicao4 == 'B' or posicao1 == 'DB') then
+      if(verificaVazio(linhaL + 2, colunaL + 2)) then
+        return true
+      end
+    end
   end
   return false
 end
 
---continua a captura de pecas em uma mesma jogada
-function novaCaptura(linha, coluna)
-  continuar = verificaArea(linha, coluna)
-  while(continuar) do
-    linhaL, colunaL = selecionaLocal()
-    if(capturaPeca(linha, coluna, linhaL, colunaL)) then
+function novaCaptura(linhaL, colunaL)
+  if(verificaArea(linhaL, colunaL)) then
+    continuar = true
+    while(continuar == true) do
       linha = linhaL
       coluna = colunaL
-      novaCaptura(linha, coluna)
+      linhaL, colunaL = selecionaLocal()
+      if(capturaPeca(linha, coluna, linhaL, colunaL)) then
+        linha = linhaL
+        coluna = colunaL
+        if(verificaArea(linha, coluna) == false) then
+          continuar = false
+        end
+      else
+        continuar = false
+      end
     end
   end
 end
