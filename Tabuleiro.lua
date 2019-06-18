@@ -9,6 +9,7 @@ function criaTabuleiro()
   end
   return tabuleiro
 end
+tabuleiro = criaTabuleiro()
 
 function posicionaPecas()
   tabuleiro[1][2] = jogador2.peca

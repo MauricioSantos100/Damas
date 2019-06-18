@@ -1,15 +1,7 @@
 function jogadores()
-  jogador1 = {nome = '', peca = 'B', quantPecas = 12, dama = 'DB', quantDamas = 0}
-  jogador2 = {nome = '', peca = 'P', quantPecas = 12, dama = 'DP', quantDamas = 0}
+  jogador1 = {nome = 'Jogador1', peca = 'B', quantPecas = 12, dama = 'DB', quantDamas = 0}
+  jogador2 = {nome = 'Jogador2', peca = 'P', quantPecas = 12, dama = 'DP', quantDamas = 0}
   return jogador1, jogador2
-end
-
-function pedeNomes()
-  io.write("Jogador 1 (Peças Brancas) digite seu nome ")
-  jogador1.nome = io.read()
-  io.write("Jogador 2 (Peças Pretas) digite seu nome ")
-  jogador2.nome = io.read()
-  print()
 end
 
 function subtraiPeca(linhaN,colunaN)
