@@ -39,22 +39,7 @@ function posicionaPecas()
   tabuleiro[8][7] = jogador1.peca
 end
 
-function mostraTabuleiro()
-  for i = 1, 8, 1 do
-    for j = 1, 8, 1 do
-      if(tabuleiro[i][j] == ' ') then
-        io.write('[  ]')
-      elseif(tabuleiro[i][j] == 'B' or tabuleiro[i][j] == 'P') then
-        io.write('['..tabuleiro[i][j]..' ]')
-      else
-        io.write('['..tabuleiro[i][j]..']')
-      end
-    end
-    print()
-  end
-end
-
-function movimentaPecaDama(linha, coluna, linhaL, colunaL)
+function movimentaPecaEDama(linha, coluna, linhaL, colunaL)
   tabuleiro[linhaL][colunaL] = tabuleiro[linha][coluna]
   tabuleiro[linha][coluna] = ' '
   if(linhaL == 1 or linhaL == 8) then
@@ -62,19 +47,19 @@ function movimentaPecaDama(linha, coluna, linhaL, colunaL)
   end
 end
 
-function verPecaB(linha, coluna)
-  if(tabuleiro[linha][coluna] == jogador1.peca or tabuleiro[linha][coluna] == jogador1.dama) then
-    return true
-  end
-  return false
-end
+-- function verPecaB(linha, coluna)
+--   if(tabuleiro[linha][coluna] == jogador1.peca or tabuleiro[linha][coluna] == jogador1.dama) then
+--     return true
+--   end
+--   return false
+-- end
 
-function verPecaP(linha, coluna)
-  if(tabuleiro[linha][coluna] == jogador2.peca or tabuleiro[linha][coluna] == jogador2.dama) then
-    return true
-  end
-  return false
-end
+-- function verPecaP(linha, coluna)
+--   if(tabuleiro[linha][coluna] == jogador2.peca or tabuleiro[linha][coluna] == jogador2.dama) then
+--     return true
+--   end
+--   return false
+-- end
 
 function verDama(linha, coluna)
   if(tabuleiro[linha][coluna] == 'DB' or tabuleiro[linha][coluna] == 'DP') then

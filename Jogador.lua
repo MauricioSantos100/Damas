@@ -3,6 +3,7 @@ function jogadores()
   jogador2 = {nome = 'Jogador2', peca = 'P', quantPecas = 12, dama = 'DP', quantDamas = 0}
   return jogador1, jogador2
 end
+jogador1, jogador2 = jogadores()
 
 function subtraiPeca(linhaN,colunaN)
   if(tabuleiro[linhaN][colunaN] == 'B') then
