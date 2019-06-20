@@ -7,14 +7,13 @@ local tabuleiro = require 'Tabuleiro'
 local pecas = require 'Pecas'
 local jogador = require 'Jogador'
 
-
 local background = display.newRect(display.contentCenterX, display.contentCenterY, 800, 800):setFillColor(238/255,232/255,170/255)
 
 local tabuleiro = criaTabuleiro()
 local jogador1, jogador2 = jogadores()
 posicionaPecas()
 
-posXR, posYR = -20, 100
+
 coresTabuleiro = {{176/255, 224/255, 230/255}, {0.73, 0.67, 0.62}}
 
 function newRect(x, y, color)
@@ -24,6 +23,7 @@ function newRect(x, y, color)
 end
 
 function montarTabuleiro()
+	posXR, posYR = -20, 100
 	for i = 1, 8 do
 		for j = 1, 8 do
 			local rect = newRect(posXR+40*j, posYR, getCorRet(i,j))
@@ -32,7 +32,6 @@ function montarTabuleiro()
 		end
 		posYR = posYR + 40
 	end
-	posXR, posYR = -20, 100
 end
 
 function getCorRet(i, j)
@@ -52,8 +51,6 @@ function getCorRet(i, j)
 	return cor
 end
 
-posXC, posYC = -20, 100
-
 function novaPeca1(x, y)
 	circ = display.newCircle(x, y, 15, 15)
 	circ:setFillColor(1,1,1)
@@ -67,6 +64,7 @@ function novaPeca2(x, y)
 end
 
 function mostrarPecas()
+	posXC, posYC = -20, 100
 	for i = 1, 8 do
 		for j = 1, 8 do
 			if(tabuleiro[i][j] == jogador1.peca) then
@@ -77,7 +75,6 @@ function mostrarPecas()
 		end
 		posYC = posYC + 40
 	end
-	posXC, posYC = -20, 100
 end
 
 posicaoClicada = nil
@@ -86,24 +83,37 @@ player = 1
 
 function jogar()
 	if(player == 1) then
-		if(movimentaPecasB(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2])) then
+		if(movimentaPecasB(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2]) == 1) then
 			player = 2
+			posicaoClicada = nil
+			pecaClicada = nil
+		elseif(movimentaPecasB(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2]) == 2) then
+			pecaClicada = posicaoClicada
+			posicaoClicada = nil
+		elseif(movimentaPecasB(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2]) == 0) then
+			posicaoClicada = nil
+			pecaClicada = nil
 		end
 	elseif(player == 2) then
-		if(movimentaPecasB(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2])) then
+		if(movimentaPecasP(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2]) == 1) then
 			player = 1
+			posicaoClicada = nil
+			pecaClicada = nil
+		elseif(movimentaPecasP(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2]) == 2) then
+			pecaClicada = posicaoClicada
+			posicaoClicada = nil
+		elseif(movimentaPecasP(pecaClicada[1], pecaClicada[2], posicaoClicada[1], posicaoClicada[2]) == 0) then
+			posicaoClicada = nil
+			pecaClicada = nil
 		end
 	end
-
-	posicaoClicada = nil
-	pecaClicada = nil
 	montarTabuleiro()
 	mostrarPecas()
 end
 
 function selecionarPecaLocal(event)
-	click = event.target.id
 	if(event.phase == "began") then
+		click = event.target.id
 		if(player == 1 and tabuleiro[click[1]][click[2]] == "B" or tabuleiro[click[1]][click[2]] == "DB") then
 			if(pecaClicada == nil) then
 				pecaClicada = click

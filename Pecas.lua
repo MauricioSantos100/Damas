@@ -5,18 +5,17 @@ function movimentaPecasB(linha, coluna, linhaL, colunaL)
     if(validaPosicao(linha, coluna, linhaL, colunaL)) then
       movimentaPecaEDama(linha, coluna, linhaL, colunaL)
       print("valida 2")
-      return true
-    elseif(validaposicaoDama(linha, coluna, linhaL, colunaL)) then
-      movimentaPecaDama(linha, coluna, linhaL, colunaL)
-      print("valida 3")
-      return true
+      return 1
     elseif(capturaPeca(linha, coluna, linhaL, colunaL)) then
-        novaCaptura(linhaL, colunaL)
+      if(verificaArea(linhaL, colunaL)) then
+        print("valida 3")
+        return 2
+      end
       print("valida 4")
-      return true
+      return 1
     end
   end
-  return false
+  return 0
 end
 
 function movimentaPecasP(linha, coluna, linhaL, colunaL)
@@ -26,16 +25,15 @@ function movimentaPecasP(linha, coluna, linhaL, colunaL)
     if(validaPosicao(linha, coluna, linhaL, colunaL)) then
       movimentaPecaEDama(linha, coluna, linhaL, colunaL)
       print("valida 2")
-      return true
-    elseif(validaposicaoDama(linha, coluna, linhaL, colunaL)) then
-      movimentaPecaDama(linha, coluna, linhaL, colunaL)
-      print("valida 3")
-      return true
+      return 1
     elseif(capturaPeca(linha, coluna, linhaL, colunaL)) then
-      novaCaptura(linhaL, colunaL)
+      if(verificaArea(linhaL, colunaL)) then
+        print("valida 3")
+        return 2
+      end
       print("valida 4")
-      return true
+      return 1
     end
   end
-  return false
+  return 0
 end

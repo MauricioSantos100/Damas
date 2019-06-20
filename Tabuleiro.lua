@@ -47,20 +47,6 @@ function movimentaPecaEDama(linha, coluna, linhaL, colunaL)
   end
 end
 
--- function verPecaB(linha, coluna)
---   if(tabuleiro[linha][coluna] == jogador1.peca or tabuleiro[linha][coluna] == jogador1.dama) then
---     return true
---   end
---   return false
--- end
-
--- function verPecaP(linha, coluna)
---   if(tabuleiro[linha][coluna] == jogador2.peca or tabuleiro[linha][coluna] == jogador2.dama) then
---     return true
---   end
---   return false
--- end
-
 function verDama(linha, coluna)
   if(tabuleiro[linha][coluna] == 'DB' or tabuleiro[linha][coluna] == 'DP') then
     return true
@@ -82,7 +68,7 @@ function verificaVazio(linhaL, colunaL)
   return false
 end
 
-function validaPosicao(linha, coluna, linhaL, colunaL)
+function validaPosicaoPeca(linha, coluna, linhaL, colunaL)
   if(tabuleiro[linha][coluna] == 'B') then
     if(linha - 1 == linhaL) then
       if(coluna + 1 == colunaL or coluna - 1 == colunaL) then
@@ -154,6 +140,20 @@ function validaposicaoDama(linha, coluna, linhaL, colunaL)
       if(linhaN == linhaL and colunaN == colunaL) then
         return true
       end
+    end
+  end
+  return false
+end
+
+function validaPosicao(linha, coluna, linhaL, colunaL)
+  if(tabuleiro[linha][coluna] == 'B' or tabuleiro[linha][coluna] == 'P') then
+    if(validaPosicaoPeca(linha, coluna, linhaL, colunaL)) then
+      return true
+    end
+  end
+  if(tabuleiro[linha][coluna] == 'DB' or tabuleiro[linha][coluna] == 'DP') then
+    if(validaPosicaoDama(linha, coluna, linhaL, colunaL)) then
+      return true
     end
   end
   return false
@@ -279,24 +279,4 @@ function verificaArea(linhaL, colunaL)
     end
   end
   return false
-end
-
-function novaCaptura(linhaL, colunaL)
-  if(verificaArea(linhaL, colunaL)) then
-    continuar = true
-    while(continuar == true) do
-      linha = linhaL
-      coluna = colunaL
-      linhaL, colunaL = selecionaLocal()
-      if(capturaPeca(linha, coluna, linhaL, colunaL)) then
-        linha = linhaL
-        coluna = colunaL
-        if(verificaArea(linha, coluna) == false) then
-          continuar = false
-        end
-      else
-        continuar = false
-      end
-    end
-  end
 end
