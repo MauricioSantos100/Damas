@@ -28,15 +28,13 @@ function adicionaDama(linhaL,colunaL)
 end
 
 function transformaEmDama(linhaL, colunaL)
-  if(tabuleiro[linhaL][colunaL] == 'B') then
-    if(linhaL == 1) then
+  if(linhaL == 1 or linhaL == 8) then
+    if(tabuleiro[linhaL][colunaL] == 'B') then
       if(colunaL == 2 or colunaL == 4 or colunaL == 6 or colunaL == 8) then
         tabuleiro[linhaL][colunaL] = 'DB'
         adicionaDama(linhaL,colunaL)
       end
-    end
-  elseif(tabuleiro[linhaL][colunaL] == 'P') then
-    if(linhaL == 8) then
+    elseif(tabuleiro[linhaL][colunaL] == 'P') then
       if(colunaL == 1 or colunaL == 3 or colunaL == 5 or colunaL == 7) then
         tabuleiro[linhaL][colunaL] = 'DP'
         adicionaDama(linhaL,colunaL)
