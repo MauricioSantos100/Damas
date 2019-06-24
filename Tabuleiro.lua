@@ -238,81 +238,143 @@ function verificaLinhaColuna(linha, coluna)
   return false
 end
 
-function verificaArea(linhaL, colunaL)
-  posicao1 = nil
-  posicao2 = nil
-  posicao3 = nil
-  posicao4 = nil
-  if(verificaLinhaColuna(linhaL - 1, colunaL - 1)) then
-    posicao1 = tabuleiro[linhaL - 1][colunaL - 1]
-  end
-  if(verificaLinhaColuna(linhaL + 1, colunaL - 1)) then
-    posicao2 = tabuleiro[linhaL + 1][colunaL - 1]
-  end
-  if(verificaLinhaColuna(linhaL - 1, colunaL + 1)) then
-    posicao3 = tabuleiro[linhaL - 1][colunaL + 1]
-  end
-  if(verificaLinhaColuna(linhaL + 1, colunaL + 1)) then
-    posicao4 = tabuleiro[linhaL + 1][colunaL + 1]
-  end
-
+function verificaPosicao1(linhaL, colunaL, posicao1)
   if(tabuleiro[linhaL][colunaL] == 'B' or tabuleiro[linhaL][colunaL] == 'DB') then
-    if(posicao1 ~= nill and posicao1 == 'P' or posicao1 == 'DP') then
+    if(posicao1 == 'P' or posicao1 == 'DP') then
       if(verificaLinhaColuna(linhaL - 2, colunaL - 2)) then
         if(verificaVazio(linhaL - 2, colunaL - 2)) then
-          return true
-        end
-      end
-    end
-    if(posicao2 ~= nill and posicao2 == 'P' or posicao2 == 'DP') then
-      if(verificaLinhaColuna(linhaL + 2, colunaL - 2)) then
-        if(verificaVazio(linhaL + 2, colunaL - 2)) then
-          return true
-        end
-      end
-    end
-    if(posicao3 ~= nill and posicao3 == 'P' or posicao3 == 'DP') then
-      if(verificaLinhaColuna(linhaL - 2, colunaL + 2)) then
-        if(verificaVazio(linhaL - 2, colunaL + 2)) then
-          return true
-        end
-      end
-    end
-    if(posicao4 ~= nill and posicao4 == 'P' or posicao4 == 'DP') then
-      if(verificaLinhaColuna(linhaL + 2, colunaL + 2)) then
-        if(verificaVazio(linhaL + 2, colunaL + 2)) then
+          linhaN = linhaL - 2
+          colunaN = colunaL - 2
           return true
         end
       end
     end
   elseif(tabuleiro[linhaL][colunaL] == 'P' or tabuleiro[linhaL][colunaL] == 'DP') then
-    if(posicao1 ~= nil and posicao1 == 'B' or posicao1 == 'DB') then
+    if(posicao1 == 'B' or posicao1 == 'DB') then
       if(verificaLinhaColuna(linhaL - 2, colunaL - 2)) then
         if(verificaVazio(linhaL - 2, colunaL - 2)) then
+          linhaN = linhaL - 2
+          colunaN = colunaL - 2
           return true
         end
       end
     end
-    if(posicao2 ~= nil and posicao2 == 'B' or posicao2 == 'DB') then
+  end
+  return false
+end
+
+function verificaPosicao2(linhaL, colunaL, posicao2)
+  if(tabuleiro[linhaL][colunaL] == 'B' or tabuleiro[linhaL][colunaL] == 'DB') then
+    if(posicao2 == 'P' or posicao1 == 'DP') then
       if(verificaLinhaColuna(linhaL + 2, colunaL - 2)) then
         if(verificaVazio(linhaL + 2, colunaL - 2)) then
+          linhaN = linhaL + 2
+          colunaN = colunaL - 2
           return true
         end
       end
     end
-    if(posicao3 ~= nil and posicao3 == 'B' or posicao3 == 'DB') then
+  elseif(tabuleiro[linhaL][colunaL] == 'P' or tabuleiro[linhaL][colunaL] == 'DP') then
+    if(posicao2 == 'B' or posicao1 == 'DB') then
+      if(verificaLinhaColuna(linhaL + 2, colunaL - 2)) then
+        if(verificaVazio(linhaL + 2, colunaL - 2)) then
+          linhaN = linhaL + 2
+          colunaN = colunaL - 2
+          return true
+        end
+      end
+    end
+  end
+  return false
+end
+
+function verificaPosicao3(linhaL, colunaL, posicao3)
+  if(tabuleiro[linhaL][colunaL] == 'B' or tabuleiro[linhaL][colunaL] == 'DB') then
+    if(posicao3 == 'P' or posicao3 == 'DP') then
       if(verificaLinhaColuna(linhaL - 2, colunaL + 2)) then
         if(verificaVazio(linhaL - 2, colunaL + 2)) then
+          linhaN = linhaL - 2
+          colunaN = colunaL + 2
           return true
         end
       end
     end
-    if(posicao4 ~= nil and posicao4 == 'B' or posicao4 == 'DB') then
-      if(verificaLinhaColuna(linhaL + 2, colunaL + 2)) then
-        if(verificaVazio(linhaL + 2, colunaL + 2)) then
+  elseif(tabuleiro[linhaL][colunaL] == 'P' or tabuleiro[linhaL][colunaL] == 'DP') then
+    if(posicao3 == 'B' or posicao3 == 'DB') then
+      if(verificaLinhaColuna(linhaL - 2, colunaL + 2)) then
+        if(verificaVazio(linhaL - 2, colunaL + 2)) then
+          linhaN = linhaL - 2
+          colunaN = colunaL + 2
           return true
         end
       end
+    end
+  end
+  return false
+end
+
+function verificaPosicao4(linhaL, colunaL, posicao4)
+  if(tabuleiro[linhaL][colunaL] == 'B' or tabuleiro[linhaL][colunaL] == 'DB') then
+    if(posicao4 == 'P' or posicao4 == 'DP') then
+      if(verificaLinhaColuna(linhaL + 2, colunaL + 2)) then
+        if(verificaVazio(linhaL + 2, colunaL + 2)) then
+          linhaN = linhaL + 2
+          colunaN = colunaL + 2
+          return true
+        end
+      end
+    end
+  elseif(tabuleiro[linhaL][colunaL] == 'P' or tabuleiro[linhaL][colunaL] == 'DP') then
+    if(posicao4 == 'B' or posicao4 == 'DB') then
+      if(verificaLinhaColuna(linhaL + 2, colunaL + 2)) then
+        if(verificaVazio(linhaL + 2, colunaL + 2)) then
+          linhaN = linhaL + 2
+          colunaN = colunaL + 2
+          return true
+        end
+      end
+    end
+  end
+  return false
+end
+
+function verificaArea(linhaL, colunaL)
+  if(verificaLinhaColuna(linhaL - 1, colunaL - 1)) then
+    posicao1 = tabuleiro[linhaL - 1][colunaL - 1]
+  else
+    posicao1 = nil
+  end
+  if(verificaLinhaColuna(linhaL + 1, colunaL - 1)) then
+    posicao2 = tabuleiro[linhaL + 1][colunaL - 1]
+  else
+    posicao2 = nil
+  end
+  if(verificaLinhaColuna(linhaL - 1, colunaL + 1)) then
+    posicao3 = tabuleiro[linhaL - 1][colunaL + 1]
+  else
+    posicao3 = nil
+  end
+  if(verificaLinhaColuna(linhaL + 1, colunaL + 1)) then
+    posicao4 = tabuleiro[linhaL + 1][colunaL + 1]
+  else
+    posicao4 = nil
+  end
+
+  if(posicao1 ~= nil) then
+    if(verificaPosicao1(linhaL,colunaL,posicao1)) then
+      return true
+    end
+  elseif(posicao2 ~= nil) then
+    if(verificaPosicao2(linhaL,colunaL,posicao2)) then
+      return true
+    end
+  elseif(posicao3 ~= nil) then
+    if(verificaPosicao3(linhaL,colunaL,posicao2)) then
+    return true
+    end
+  elseif(posicao4 ~= nil) then
+    if(verificaPosicao4(linhaL,colunaL,posicao4)) then
+      return true
     end
   end
   return false
@@ -327,7 +389,7 @@ function movimentaPecasB(linha, coluna, linhaL, colunaL)
       if(verificaArea(linhaL, colunaL)) then
         return 2
       end
-      return 1
+      return 3
     end
   elseif(verDamaB(linha, coluna)) then
     if(validaposicaoDama(linha, coluna, linhaL, colunaL)) then
@@ -347,7 +409,7 @@ function movimentaPecasP(linha, coluna, linhaL, colunaL)
       if(verificaArea(linhaL, colunaL)) then
         return 2
       end
-      return 1
+      return 3
     end
   elseif(verDamaP(linha, coluna)) then
     if(validaposicaoDama(linha, coluna, linhaL, colunaL)) then
