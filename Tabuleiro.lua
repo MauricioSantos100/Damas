@@ -1,6 +1,5 @@
 function criaTabuleiro()
   tabuleiro = {}
-  
   for i = 1, 8, 1 do
     tabuleiro[i] = {}
     for j = 1, 8, 1 do
@@ -12,31 +11,31 @@ end
 tabuleiro = criaTabuleiro()
 
 function posicionaPecas()
-  -- tabuleiro[1][2] = jogador2.peca
-  -- tabuleiro[1][4] = jogador2.peca
-  -- tabuleiro[1][6] = jogador2.peca
-  -- tabuleiro[1][8] = jogador2.peca
-  -- tabuleiro[2][1] = jogador2.peca
-  -- tabuleiro[2][3] = jogador2.peca
-  -- tabuleiro[2][5] = jogador2.peca
-  -- tabuleiro[2][7] = jogador2.peca
+  tabuleiro[1][2] = jogador2.peca
+  tabuleiro[1][4] = jogador2.peca
+  tabuleiro[1][6] = jogador2.peca
+  tabuleiro[1][8] = jogador2.peca
+  tabuleiro[2][1] = jogador2.peca
+  tabuleiro[2][3] = jogador2.peca
+  tabuleiro[2][5] = jogador2.peca
+  tabuleiro[2][7] = jogador2.peca
   tabuleiro[3][2] = jogador2.peca
-  tabuleiro[3][4] = jogador2.dama
+  tabuleiro[3][4] = jogador2.peca
   tabuleiro[3][6] = jogador2.peca
   tabuleiro[3][8] = jogador2.peca
 
   tabuleiro[6][1] = jogador1.peca
   tabuleiro[6][3] = jogador1.peca
-  tabuleiro[6][5] = jogador1.dama
+  tabuleiro[6][5] = jogador1.peca
   tabuleiro[6][7] = jogador1.peca
-  -- tabuleiro[7][2] = jogador1.peca
-  -- tabuleiro[7][4] = jogador1.peca
-  -- tabuleiro[7][6] = jogador1.peca
-  -- tabuleiro[7][8] = jogador1.peca
-  -- tabuleiro[8][1] = jogador1.peca
-  -- tabuleiro[8][3] = jogador1.peca
-  -- tabuleiro[8][5] = jogador1.peca
-  -- tabuleiro[8][7] = jogador1.peca
+  tabuleiro[7][2] = jogador1.peca
+  tabuleiro[7][4] = jogador1.peca
+  tabuleiro[7][6] = jogador1.peca
+  tabuleiro[7][8] = jogador1.peca
+  tabuleiro[8][1] = jogador1.peca
+  tabuleiro[8][3] = jogador1.peca
+  tabuleiro[8][5] = jogador1.peca
+  tabuleiro[8][7] = jogador1.peca
 end
 
 function movimentaPecaEDama(linha, coluna, linhaL, colunaL)
@@ -395,6 +394,11 @@ function movimentaPecasB(linha, coluna, linhaL, colunaL)
     if(validaposicaoDama(linha, coluna, linhaL, colunaL)) then
       movimentaPecaEDama(linha, coluna, linhaL, colunaL)
       return 1
+    elseif(capturaPeca(linha, coluna, linhaL, colunaL)) then
+      if(verificaArea(linhaL, colunaL)) then
+        return 2
+      end
+      return 3
     end
   end
   return 0
@@ -415,6 +419,11 @@ function movimentaPecasP(linha, coluna, linhaL, colunaL)
     if(validaposicaoDama(linha, coluna, linhaL, colunaL)) then
       movimentaPecaEDama(linha, coluna, linhaL, colunaL)
       return 1
+    elseif(capturaPeca(linha, coluna, linhaL, colunaL)) then
+      if(verificaArea(linhaL, colunaL)) then
+        return 2
+      end
+      return 3
     end
   end
   return 0
